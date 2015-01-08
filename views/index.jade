@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  p(id="pid")
+  form
+    input(type="text" id="peerid" placeholder="peer id")
+    input(type="button" id="connect" value="connect")
+  canvas(width="240",height="333",id="my_canvas")
+  div(id="myfude" class="fude")
+    img(src="/images/fude.png")
+  div
+    input(type="button" id="clear" value="けす")
+  hr
+  div(id="other_canvas")
+
+  script(src="/javascripts/jquery-2.0.3.min.js", type="text/javascript")
+  script(src="http://cdn.peerjs.com/0.3/peer.js", type="text/javascript")
+  script(src="/javascripts/rtc_manager.js", type="text/javascript")
+  script(src="/javascripts/kakizome.js", type="text/javascript")
+  script(src="/javascripts/three.js", type="text/javascript")
+  script(src="/javascripts/dasoku.js", type="text/javascript")
+  script.
+    // rtc関連
+    rtc_manager.init();
+    $("#connect").on("click", function(){
+        rtc_manager.connecting(document.getElementById("peerid").value);
+    });
+
+    rtc_manager.setReceiveAction(function(_pid, _data){
+        kakizome.drow_operate(_pid, _data);
+    });
+
+    // canvas
+    kakizome.init("my_canvas");
+
+    dasoku.init();
